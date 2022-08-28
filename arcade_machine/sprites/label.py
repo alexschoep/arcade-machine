@@ -14,7 +14,6 @@ class Label(OrderedUpdates):
         self,
         text_content: str,
         text_color: str,
-        text_size: int,
         x_pos: int,
         y_pos: int,
         background_color: str = None,
@@ -26,7 +25,7 @@ class Label(OrderedUpdates):
         self.x_pos = x_pos
         self.y_pos = y_pos
         self.background_color = background_color
-        self.font = SysFont(font_style, text_size)
+        self.font = font_style
 
         self.label = Sprite()
         self.label.image = self.font.render(

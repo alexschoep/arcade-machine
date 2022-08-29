@@ -14,5 +14,8 @@ def stop_music():
 def music_volume(value):
     mixer.music.set_volume(value)
 
+def get_volume():
+    return mixer.music.get_volume()
+
 if __name__ == "__main__":
     pass

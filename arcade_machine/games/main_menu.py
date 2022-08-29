@@ -53,7 +53,7 @@ class MainMenu(Game):
             #    event = Event(CHANGE_GAME, {"game": item})
             #    pygame_post_event(event)
             elif event.key == K_m:
-                event = Event(CHANGE_GAME, {"Settings": 0})
+                event = Event(CHANGE_GAME, {"game": "Settings"})
                 pygame_post_event(event)
             elif event.key == K_ESCAPE:
                 pygame_quit()
@@ -66,8 +66,8 @@ class MainMenu(Game):
         pong = Title("PONG", "arcade_machine/resources/images/Main_Menu/No Image.png", (200, 200, 200),
                      "arcade_machine/resources/fonts/Main Menu/Early GameBoy.ttf", (0, 0, 0), 0)
         self.game_titles.append(pong)
-        snake = Title("Snake", "arcade_machine/resources/images/Main_Menu/No Image.png", (85, 134, 255),
-                      "arcade_machine/resources/fonts/Snake/04B_30__.ttf", (9, 41, 119), 1)
+        snake = Title("Snake", "arcade_machine/resources/images/Main_Menu/No Image.png", (62, 59, 156),
+                      "arcade_machine/resources/fonts/Snake/04B_30__.ttf", (121, 120, 156), 1)
         self.game_titles.append(snake)
         marslander = Title("Mars Lander", "arcade_machine/resources/images/Main_Menu/Mars Lander.png", (241, 219, 205),
                       "arcade_machine/resources/fonts/Mars Lander/LemonMilk.otf", (200, 59, 0), 1)

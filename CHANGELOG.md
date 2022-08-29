@@ -8,8 +8,14 @@
 
 ## [0.0.1]
  - improved the appearance of the Main Menu and setup a 'Title' class for game title appearance attributes
+   - game title information is defined in main_menu.py and main.py.
+   - names for the game title, and game dictionary should match to avoid conflicts
  - created Arcade Settings game for users to change the system volume and quit the console
+   - pygame audio mixer is shared across the project, changes will be applied to music for all games
  - created a color blender for animated backgrounds that change color
  - created a music player component to manage system Music
  - created a sound mixer component to manage system Sounds
+ - (incomplete) created a shape to sprite module for using the pygame draw features
  - added fonts and images to resources for demonstrations
+ - cursor set to invisible over window
+ - implemented correct key mapping for joystick and button controls

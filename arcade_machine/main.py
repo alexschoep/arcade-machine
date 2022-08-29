@@ -1,7 +1,6 @@
-from pygame import QUIT, K_ESCAPE, KEYDOWN, mouse
+from pygame import QUIT, mouse
 from pygame import init as pygame_init
 from pygame import quit as pygame_quit
-from pygame import FULLSCREEN
 from pygame.display import set_mode as pygame_set_display_mode
 from pygame.display import update as pygame_update_display
 from pygame.time import Clock
@@ -12,7 +11,7 @@ from games.main_menu import MainMenu
 from games.pong import Pong
 from games.arcade_settings import ArcadeSettings
 
-from arcade_machine.components.music_player import stop_music
+from arcade_machine.Controller.music_player import stop_music
 
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 768

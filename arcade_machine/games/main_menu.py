@@ -1,32 +1,32 @@
 import pygame.sprite
-from pygame import KEYDOWN, K_a, K_d, K_j, K_l, K_RETURN, K_ESCAPE, K_m
+from pygame import KEYDOWN, K_a, K_d, K_j, K_l, K_ESCAPE, K_m
 from pygame.event import post as pygame_post_event
 from pygame.event import Event
 from pygame import quit as pygame_quit
 from pygame import font
 
-from arcade_machine.components.music_player import load_music, play_music, stop_music
+from arcade_machine.Controller.music_player import load_music, play_music
 from arcade_machine.components.game_title import Title
-from arcade_machine.components.bg_blender import blender_list
+from arcade_machine.utility.color_blender import get_blended_colors_list
 
 from arcade_machine.events import CHANGE_GAME
 from arcade_machine.sprites.label import Label
 from arcade_machine.games.game import Game
-from arcade_machine.components.item_menu import ItemMenu
+
 
 class MainMenu(Game):
     def __init__(self):
         super().__init__()
 
     def initialize(self):
-        self.animation_timer = 0
-        self.blend_flag = True
-        self.index = 0
+        self.animation_timer = 0 # Used for bg coloring
+        self.button_flag = True # Flag if a button is pressed
+        self.index = 0 # Index for games carousel
         self.background = (0, 0, 0)
-        self.color_list = []
+        self.color_list = [] # Used for bg coloring
 
         load_music('arcade_machine/resources/audio/Main_Menu/Theme.mp3')
-        play_music(-1)
+        play_music(-1) # loop indefinitely
 
         self.TITLE_FONT = font.Font('arcade_machine/resources/fonts/Main Menu/Early GameBoy.ttf', 48)
         self.BODY_FONT = font.Font('arcade_machine/resources/fonts/Main Menu/Early GameBoy.ttf', 24)
@@ -34,7 +34,7 @@ class MainMenu(Game):
         self.drawable_objects.append(self.menu_title)
 
         self.game_titles = []
-        self.create_game_titles()
+        self.create_game_titles() # Create a list for all the games & display attributes
         self.poster = None
         self.poster_group = pygame.sprite.Group()
 
@@ -44,18 +44,14 @@ class MainMenu(Game):
         if event.type == KEYDOWN:
             if event.key == K_a or event.key == K_j:
                 self.index -= 1
-                self.blend_flag = True
+                self.button_flag = True
             elif event.key == K_d or event.key == K_l:
                 self.index += 1
-                self.blend_flag = True
-            #elif event.key == K_RETURN:
-            #    item = self.menu.get_selected_item()
-            #    event = Event(CHANGE_GAME, {"game": item})
-            #    pygame_post_event(event)
+                self.button_flag = True
             elif event.key == K_m:
                 event = Event(CHANGE_GAME, {"game": "Settings"})
                 pygame_post_event(event)
-            elif event.key == K_ESCAPE:
+            elif event.key == K_ESCAPE: #TODO: Remove escape functionality
                 pygame_quit()
                 exit()
     def create_game_titles(self):
@@ -74,21 +70,21 @@ class MainMenu(Game):
         self.game_titles.append(marslander)
 
     def update(self):
-        if self.blend_flag:
-            if self.index > len(self.game_titles) - 1:
+        if self.button_flag:
+            if self.index > len(self.game_titles) - 1: # Loop the carousel when at the end of the list
                 self.index = 0
             elif self.index < 0:
                 self.index = len(self.game_titles) - 1
 
-            self.color_list = blender_list(self.background, self.game_titles[self.index].bg_color)
-            self.blend_flag = False
+            self.color_list = get_blended_colors_list(self.background, self.game_titles[self.index].bg_color, 8)
+            self.button_flag = False
             self.animation_timer = 0
 
             self.poster_group.empty()
             self.poster = self.game_titles[self.index].poster
             self.poster_group.add(self.poster)
 
-            if self.game_titles[self.index].players == 0:
+            if self.game_titles[self.index].players == 0: # Set the no. players text
                 text = "1 and 2 Players"
             elif self.game_titles[self.index].players == 1:
                 text = "Single Player"
@@ -96,11 +92,11 @@ class MainMenu(Game):
                 text = "Two Players"
             self.player_text = Label(text, (255, 255, 255), 512, 720, None, self.BODY_FONT)
 
-        if self.animation_timer <= 8:
+        if self.animation_timer <= 8: # Control the bg color change
             self.background = self.color_list[self.animation_timer]
             self.animation_timer += 1
 
-        self.drawable_objects.clear()
+        self.drawable_objects.clear() # Clear the objects, so they will not layer and prepare to redraw
 
         self.drawable_objects.append(self.menu_title)
         self.drawable_objects.append(self.player_text)

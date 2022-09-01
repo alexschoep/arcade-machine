@@ -68,3 +68,19 @@ class Label(OrderedUpdates):
             self.text_color
         )
         self.background.image.fill(self.background_color)
+
+    def redraw_label(self, **kwargs):
+        if 'text' in kwargs:
+            self.text_content = kwargs.get('text')
+        if 'color' in kwargs:
+            self.text_color = kwargs.get('color')
+        if 'font' in kwargs:
+            self.font = kwargs.get('font')
+        self.label.image = self.font.render(
+            self.text_content,
+            True,
+            self.text_color
+        )
+        self.label.rect = self.label.image.get_rect()
+        self.label.rect.centerx = self.x_pos
+        self.label.rect.centery = self.y_pos

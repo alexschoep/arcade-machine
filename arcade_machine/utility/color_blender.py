@@ -18,6 +18,3 @@ def get_blended_colors_list(start, target, steps): # Tuple value for start, tupl
                    (start[2] + int(blue_step * i)))
         colors.append(rgb_val)
     return colors # return a list of tuples
-
-if __name__ == "__main__":
-    pass

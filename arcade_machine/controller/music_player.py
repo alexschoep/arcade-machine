@@ -5,17 +5,14 @@ def load_music(track):
         stop_music()
     mixer.music.load(track)
 
-def play_music(loops):
+def play_music(loops=-1):
     mixer.music.play(loops)
 
 def stop_music():
     mixer.music.stop()
 
-def music_volume(value):
+def set_volume(value):
     mixer.music.set_volume(value)
 
 def get_volume():
     return mixer.music.get_volume()
-
-if __name__ == "__main__":
-    pass

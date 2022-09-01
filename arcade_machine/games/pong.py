@@ -5,7 +5,7 @@ from arcade_machine.events import CHANGE_GAME
 from pygame import Surface
 from pygame.sprite import Sprite, Group
 from arcade_machine.games.game import Game
-
+from arcade_machine.sprites.rectangle import Rectangle
 
 class Ball(Sprite):
     def __init__(self):
@@ -32,6 +32,17 @@ class Pong(Game):
         self.ball_group = Group()
         self.ball_group.add(ball)
         self.drawable_objects.append(self.ball_group)
+
+        r = Rectangle(color=(0, 255, 0),
+                      x_pos=400,
+                      y_pos=100,
+                      width=50,
+                      height=80,
+                      line_weight=2,
+                      bevel=5,
+                      alpha=80,
+                      anchor="BottomRight")
+        self.drawable_objects.append(r)
 
     def handle_event(self, event):
         if event.type == KEYDOWN:

@@ -15,7 +15,11 @@
  - created a color blender for animated backgrounds that change color
  - created a music player component to manage system Music
  - created a sound mixer component to manage system Sounds
- - (incomplete) created a shape to sprite module for using the pygame draw features
  - added fonts and images to resources for demonstrations
  - cursor set to invisible over window
  - implemented correct key mapping for joystick and button controls
+ - created a rectangle sprite class
+ - created a line sprite class
+ - created an image sprite class
+ - created a carousel class that will loop through the content
+ - added a redraw function to the Label class to change font, color, and text

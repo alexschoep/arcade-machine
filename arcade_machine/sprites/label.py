@@ -6,8 +6,6 @@ from pygame.font import SysFont
 class Label(OrderedUpdates):
     """ Use this sprite to write text to the screen.
     """
-
-    DEFAULT_FONT = 'Arial'
     PADDING_SIZE = 5
 
     def __init__(
@@ -16,16 +14,16 @@ class Label(OrderedUpdates):
         text_color: str,
         x_pos: int,
         y_pos: int,
+        font,
         background_color: str = None,
-        font_style: str = DEFAULT_FONT
     ):
         super().__init__()
         self.text_content = text_content
         self.text_color = text_color
         self.x_pos = x_pos
         self.y_pos = y_pos
+        self.font = font
         self.background_color = background_color
-        self.font = font_style
 
         self.label = Sprite()
         self.label.image = self.font.render(
@@ -69,13 +67,18 @@ class Label(OrderedUpdates):
         )
         self.background.image.fill(self.background_color)
 
-    def redraw_label(self, **kwargs):
-        if 'text' in kwargs:
-            self.text_content = kwargs.get('text')
-        if 'color' in kwargs:
-            self.text_color = kwargs.get('color')
-        if 'font' in kwargs:
-            self.font = kwargs.get('font')
+    def redraw_label(
+            self,
+            text = None,
+            color = None,
+            font = None
+        ):
+        if text:
+            self.text_content = text
+        if color:
+            self.text_color = color
+        if font:
+            self.font = font
         self.label.image = self.font.render(
             self.text_content,
             True,

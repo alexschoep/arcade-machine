@@ -1,9 +1,8 @@
-from pygame import Surface
 from pygame.sprite import Sprite, OrderedUpdates
 from pygame.image import load
 
 
-class Image(OrderedUpdates):
+class ImageSprite(OrderedUpdates):
     """ Use this sprite to draw an image to the screen.
     """
     def __init__(self, image, x_pos, y_pos, anchor):
@@ -13,7 +12,7 @@ class Image(OrderedUpdates):
         self.anchor = anchor
 
         self.sprite = Sprite()
-        self.sprite.image = load(image).convert()
+        self.sprite.image = load(image.get_file_path()).convert()
         self.sprite.rect = self.sprite.image.get_rect()
         self.place_image(self.anchor)
 

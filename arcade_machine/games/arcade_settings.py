@@ -2,7 +2,7 @@
 from arcade_machine.games.game import Game
 from arcade_machine.sprites.label import Label
 from arcade_machine.sprites.rectangle import Rectangle
-from arcade_machine.controller.music_player import set_volume, get_volume
+from arcade_machine.controllers.music_player import set_volume, get_volume
 from arcade_machine.events import CHANGE_GAME
 from pygame import font
 from pygame import KEYDOWN, K_a, K_d, K_j, K_l, K_1, K_9, K_m
@@ -21,13 +21,13 @@ class ArcadeSettings(Game):
         self.TITLE_FONT = font.Font('arcade_machine/resources/fonts/Main Menu/Early GameBoy.ttf', 48)
         self.BODY_FONT = font.Font('arcade_machine/resources/fonts/Main Menu/Early GameBoy.ttf', 24)
 
-        self.settings_title = Label('Settings', (255, 255, 255), 512, 60, None, self.TITLE_FONT)
-        self.vol_text = Label('System Volume:', (255, 255, 255), 512, 200, None, self.BODY_FONT)
-        self.vol_level = Label(str(int(self.volume * 100)), (255, 255, 255), 512, 250, None, self.BODY_FONT)
-        self.ver_text = Label('Version 0.0.1', (100, 100, 100), 512, 400, None, self.BODY_FONT)
-        self.back = Label("Press 'A' to return to the games.", (120, 120, 120), 512, 530, None, self.BODY_FONT)
-        self.leave = Label('Press MENU to quit the console.', (80, 10, 15), 512, 575, None, self.BODY_FONT)
-        self.creators = Label('By Alex and Billy', (40, 40, 40), 512, 670, None, self.BODY_FONT)
+        self.settings_title = Label('Settings', (255, 255, 255), 512, 60, self.TITLE_FONT)
+        self.vol_text = Label('System Volume:', (255, 255, 255), 512, 200, self.BODY_FONT)
+        self.vol_level = Label(str(int(self.volume * 100)), (255, 255, 255), 512, 250, self.BODY_FONT)
+        self.ver_text = Label('Version 0.0.1', (100, 100, 100), 512, 400, self.BODY_FONT)
+        self.back = Label("Press 'A' to return to the games.", (120, 120, 120), 512, 530, self.BODY_FONT)
+        self.leave = Label('Press MENU to quit the console.', (80, 10, 15), 512, 575, self.BODY_FONT)
+        self.creators = Label('By Alex and Billy', (40, 40, 40), 512, 670, self.BODY_FONT)
 
         self.drawable_objects.append(self.settings_title) # Add labels to be drawn
         self.drawable_objects.append(self.vol_text)

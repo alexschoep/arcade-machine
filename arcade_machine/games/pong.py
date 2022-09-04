@@ -6,6 +6,8 @@ from pygame import Surface
 from pygame.sprite import Sprite, Group
 from arcade_machine.games.game import Game
 from arcade_machine.sprites.rectangle import Rectangle
+from arcade_machine.images.thumbnail_images import pong_thumbnail
+from arcade_machine.fonts.thumbnail_fonts import early_gameboy_font
 
 class Ball(Sprite):
     def __init__(self):
@@ -24,7 +26,6 @@ class Ball(Sprite):
 class Pong(Game):
     def __init__(self):
         super().__init__()
-        pass
 
     def initialize(self):
         self.background = 'Black'

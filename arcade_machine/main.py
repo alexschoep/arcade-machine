@@ -11,7 +11,7 @@ from games.main_menu import MainMenu
 from games.pong import Pong
 from games.arcade_settings import ArcadeSettings
 
-from arcade_machine.controller.music_player import stop_music
+from arcade_machine.controllers.music_player import stop_music
 
 SCREEN_WIDTH = 1024
 SCREEN_HEIGHT = 768

@@ -1,6 +1,5 @@
 from abc import abstractmethod
 
-from matplotlib.pyplot import title
 
 class Game:
     def __init__(self):

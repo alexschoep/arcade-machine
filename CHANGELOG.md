@@ -1,10 +1,7 @@
 # Changelog
 
-## [0.0.0]
- - set up initial project directories, structure
- - created main event loop
- - created main menu
- - created dummy pong game
+## [0.0.2]
+ - added highscore manager
 
 ## [0.0.1]
  - improved the appearance of the Main Menu and setup a 'Title' class for game title appearance attributes
@@ -23,3 +20,9 @@
  - created an image sprite class
  - created a carousel class that will loop through the content
  - added a redraw function to the Label class to change font, color, and text
+
+## [0.0.0]
+ - set up initial project directories, structure
+ - created main event loop
+ - created main menu
+ - created dummy pong game

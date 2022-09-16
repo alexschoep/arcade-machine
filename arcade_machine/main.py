@@ -8,8 +8,10 @@ from pygame.event import get as pygame_get_event
 from arcade_machine.events import CHANGE_GAME
 
 from games.main_menu import MainMenu
-from games.pong import Pong
 from games.arcade_settings import ArcadeSettings
+from games.pong import Pong
+from games.snake import Snake
+
 
 from arcade_machine.controllers.music_player import stop_music
 
@@ -54,9 +56,11 @@ def get_game(game_title):
     games = {
         "MainMenu": MainMenu(),
         "Pong": Pong(),
-        "Settings": ArcadeSettings()
+        "Settings": ArcadeSettings(),
+        "Snake": Snake()
     }
     return games[game_title]
+
 
 if __name__ == "__main__":
     main()

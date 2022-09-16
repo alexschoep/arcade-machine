@@ -1,4 +1,4 @@
-from pygame import QUIT
+from pygame import QUIT, mouse
 from pygame import init as pygame_init
 from pygame import quit as pygame_quit
 from pygame.display import set_mode as pygame_set_display_mode
@@ -7,19 +7,20 @@ from pygame.time import Clock
 from pygame.event import get as pygame_get_event
 from arcade_machine.events import CHANGE_GAME
 
-from arcade_machine.games.main_menu import MainMenu
-from arcade_machine.games.pong import Pong
+from games.main_menu import MainMenu
+from games.pong import Pong
+from games.arcade_settings import ArcadeSettings
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 400
+from arcade_machine.controllers.music_player import stop_music
+
+SCREEN_WIDTH = 1024
+SCREEN_HEIGHT = 768
 
 def main():
     pygame_init()
     clock = Clock()
-    screen = pygame_set_display_mode((
-        SCREEN_WIDTH,
-        SCREEN_HEIGHT
-    ))
+    screen = pygame_set_display_mode((SCREEN_WIDTH, SCREEN_HEIGHT))#, FULLSCREEN) TODO: Implement FULLSCREEN
+    mouse.set_visible(False)
 
     current_game = None
     current_game_title = "MainMenu"
@@ -27,6 +28,7 @@ def main():
 
     while True:
         if game_changed:
+            stop_music() # Stop music to prevent sound mix issues when initializing the next game
             current_game = get_game(current_game_title)
             current_game.initialize()
             game_changed = False
@@ -51,7 +53,8 @@ def main():
 def get_game(game_title):
     games = {
         "MainMenu": MainMenu(),
-        "Pong": Pong()
+        "Pong": Pong(),
+        "Settings": ArcadeSettings()
     }
     return games[game_title]
 

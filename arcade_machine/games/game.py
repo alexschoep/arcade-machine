@@ -1,5 +1,6 @@
 from abc import abstractmethod
 
+
 class Game:
     def __init__(self):
         self.background = None

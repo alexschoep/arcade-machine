@@ -1,0 +1,14 @@
+{
+    "Game1": {
+        "persist_count": 3,
+        "scores": [{
+                "name": "ADS",
+                "score": 80
+            },
+            {
+                "name": "WJC3",
+                "score": 80
+            }
+        ]
+    }
+}

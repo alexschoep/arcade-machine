@@ -11,6 +11,7 @@ from pygame.event import post as pygame_post_event
 from pygame.event import Event
 
 from arcade_machine.fonts.system_fonts import EARLY_GAMEBOY_FONT
+from arcade_machine.controllers.music_player import load_music, play_music, stop_music
 
 class ArcadeSettings(Game):
     def __init__(self):
@@ -71,6 +72,8 @@ class ArcadeSettings(Game):
                                      alpha=255,
                                      anchor="MidLeft")
         self.drawable_objects.append(self.fill_bar)
+        load_music('arcade_machine/resources/audio/Settings/menu_music.mp3')
+        play_music()  # loop indefinitely
 
     def handle_event(self, event):
         if event.type == KEYDOWN:
@@ -79,9 +82,11 @@ class ArcadeSettings(Game):
             elif event.key == K_d or event.key == K_l:
                 self.handle_change_volume("UP")
             elif event.key == K_1 or event.key == K_9:
+                stop_music()
                 event = Event(CHANGE_GAME, {"game": "MainMenu"})
                 pygame_post_event(event)
             elif event.key == K_m:
+                stop_music()
                 pygame_quit()
                 exit()
     def update(self):

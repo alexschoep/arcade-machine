@@ -62,9 +62,6 @@ class MainMenu(Game):
                 stop_music()
                 event = Event(CHANGE_GAME, {"game": "Settings"})
                 pygame_post_event(event)
-            elif event.key == K_ESCAPE: #TODO: Remove escape functionality
-                pygame_quit()
-                exit()
 
     def update(self):
         if self.bg_animation_timer <= self.bg_animation_steps: # Control the bg color change

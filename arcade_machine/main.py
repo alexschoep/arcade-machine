@@ -11,6 +11,7 @@ from games.main_menu import MainMenu
 from games.arcade_settings import ArcadeSettings
 from games.pong import Pong
 from games.snake import Snake
+from games.mars_lander import MarsLander
 
 
 from arcade_machine.controllers.music_player import stop_music
@@ -57,7 +58,8 @@ def get_game(game_title):
         "MainMenu": MainMenu(),
         "Pong": Pong(),
         "Settings": ArcadeSettings(),
-        "Snake": Snake()
+        "Snake": Snake(),
+        "Mars Lander": MarsLander()
     }
     return games[game_title]
 

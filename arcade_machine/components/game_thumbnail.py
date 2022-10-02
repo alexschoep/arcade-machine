@@ -1,8 +1,7 @@
 from typing import Tuple
-from pygame.font import Font as PygameFont
+from arcade_machine.font_manager import font_manager
 from arcade_machine.sprites.label import Label
 from arcade_machine.sprites.image_sprite import ImageSprite
-from arcade_machine.fonts.system_fonts import *
 from arcade_machine.images.thumbnail_images import *
 
 class GameThumbnail():
@@ -11,7 +10,7 @@ class GameThumbnail():
         title: str,
         thumbnail: Image,
         text_color: Tuple[int, int, int],
-        font: Font,
+        font,
         bg_color: Tuple[int, int, int],
         one_player_mode: bool,
         two_player_mode: bool
@@ -36,7 +35,7 @@ class GameThumbnail():
             self.text_color,
             512,
             610,
-            PygameFont(self.font.get_file_path(), 48)
+            font_manager.get_font(self.font, 48)
         )
 
         if self.one_player_mode and self.two_player_mode:
@@ -51,7 +50,7 @@ class GameThumbnail():
             (255, 255, 255),
             512,
             700,
-            PygameFont(EARLY_GAMEBOY_FONT.get_file_path(), 24)
+            font_manager.get_font("early_gameboy", 24)
         )
 
         thumbnail = ImageSprite(
@@ -74,7 +73,7 @@ pong_thumbnail_item = GameThumbnail(
     "Pong",
     PONG_THUMBNAIL,
     (200, 200, 200),
-    EARLY_GAMEBOY_FONT,
+    "early_gameboy",
     (50, 50, 50),
     True,
     True
@@ -84,7 +83,7 @@ asteroid_universe_thumbnail_item = GameThumbnail(
     "Asteroid Universe",
     ASTEROID_UNIVERSE_THUMBNAIL,
     (84, 139, 161),
-    RACING_HARD_FONT,
+    "racing_hard",
     (16, 48, 61),
     True,
     True
@@ -94,7 +93,7 @@ mars_lander_thumbnail_item = GameThumbnail(
     "Mars Lander",
     MARS_LANDER_THUMBNAIL,
     (241, 219, 205),
-    LEMON_MILK_FONT,
+    "lemon_milk",
     (200, 59, 0),
     True,
     False
@@ -104,7 +103,7 @@ snake_thumbnail_item = GameThumbnail(
     "Snake",
     SNAKE_THUMBNAIL,
     (62, 59, 156),
-    EARLY_GAMEBOY_FONT,
+    "early_gameboy",
     (121, 120, 156),
     True,
     False

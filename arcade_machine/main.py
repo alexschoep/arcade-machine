@@ -5,15 +5,11 @@ from pygame.display import set_mode as pygame_set_display_mode
 from pygame.display import update as pygame_update_display
 from pygame.time import Clock
 from pygame.event import get as pygame_get_event
+
 from arcade_machine.events import CHANGE_GAME
-
 from games.main_menu import MainMenu
-from games.arcade_settings import ArcadeSettings
 from games.pong import Pong
-from games.snake import Snake
-from games.mars_lander import MarsLander
-
-
+from games.arcade_settings import ArcadeSettings
 from arcade_machine.controllers.music_player import stop_music
 
 SCREEN_WIDTH = 1024
@@ -57,12 +53,9 @@ def get_game(game_title):
     games = {
         "MainMenu": MainMenu(),
         "Pong": Pong(),
-        "Settings": ArcadeSettings(),
-        "Snake": Snake(),
-        "Mars Lander": MarsLander()
+        "Settings": ArcadeSettings()
     }
     return games[game_title]
-
 
 if __name__ == "__main__":
     main()

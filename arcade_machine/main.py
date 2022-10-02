@@ -5,12 +5,11 @@ from pygame.display import set_mode as pygame_set_display_mode
 from pygame.display import update as pygame_update_display
 from pygame.time import Clock
 from pygame.event import get as pygame_get_event
-from arcade_machine.events import CHANGE_GAME
 
+from arcade_machine.events import CHANGE_GAME
 from games.main_menu import MainMenu
 from games.pong import Pong
 from games.arcade_settings import ArcadeSettings
-
 from arcade_machine.controllers.music_player import stop_music
 
 SCREEN_WIDTH = 1024

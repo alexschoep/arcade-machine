@@ -4,13 +4,12 @@ from arcade_machine.sprites.label import Label
 from arcade_machine.sprites.rectangle import Rectangle
 from arcade_machine.controllers.music_player import set_volume, get_volume
 from arcade_machine.events import CHANGE_GAME
-from pygame.font import Font as PygameFont
 from pygame import KEYDOWN, K_a, K_d, K_j, K_l, K_1, K_9, K_m
 from pygame import quit as pygame_quit
 from pygame.event import post as pygame_post_event
 from pygame.event import Event
 
-from arcade_machine.fonts.system_fonts import EARLY_GAMEBOY_FONT
+from arcade_machine.font_manager import font_manager
 from arcade_machine.controllers.music_player import load_music, play_music, stop_music
 
 class ArcadeSettings(Game):
@@ -21,8 +20,8 @@ class ArcadeSettings(Game):
         self.background = (0, 0, 0)
         self.volume = get_volume()
 
-        self.TITLE_FONT = PygameFont(EARLY_GAMEBOY_FONT.get_file_path(), 48)
-        self.BODY_FONT = PygameFont(EARLY_GAMEBOY_FONT.get_file_path(), 24)
+        self.TITLE_FONT = font_manager.get_font("early_gameboy", 48)
+        self.BODY_FONT = font_manager.get_font("early_gameboy", 24)
 
         self.settings_title = Label('Settings', (255, 255, 255), 512, 60, self.TITLE_FONT)
         self.vol_text = Label('System Volume:', (255, 255, 255), 512, 200, self.BODY_FONT)

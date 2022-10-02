@@ -3,6 +3,7 @@ from pygame.event import post as pygame_post_event
 from pygame.event import Event
 from pygame import quit as pygame_quit
 
+from arcade_machine.font_manager import font_manager
 from arcade_machine.controllers.music_player import load_music, play_music, stop_music
 from arcade_machine.utility.color_blender import get_blended_colors_list
 from arcade_machine.components.carousel_menu import CarouselMenu
@@ -11,7 +12,9 @@ from arcade_machine.games.game import Game
 from arcade_machine.components.game_thumbnail import *
 
 class MainMenu(Game):
-    def __init__(self):
+    def __init__(
+        self
+    ):
         super().__init__()
 
     def initialize(self):
@@ -21,8 +24,8 @@ class MainMenu(Game):
 
         self.background = (0, 0, 0)
 
-        self.title_font = PygameFont(EARLY_GAMEBOY_FONT.get_file_path(), 48)
-        self.menu_title = Label('Arcade Machine', (255, 255, 255), 512, 60, self.title_font)
+        self.font_eg_48 = font_manager.get_font("early_gameboy", 48)
+        self.menu_title = Label('Arcade Machine', (255, 255, 255), 512, 60, self.font_eg_48)
         self.drawable_objects.append(self.menu_title)
 
         self.carousel_menu = CarouselMenu([

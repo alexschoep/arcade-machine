@@ -1,6 +1,5 @@
 {
     "Game1": {
-        "persist_count": 3,
         "scores": [{
                 "name": "ADS",
                 "score": 80
@@ -10,5 +9,6 @@
                 "score": 80
             }
         ]
-    }
+    },
+    "Snake": []
 }

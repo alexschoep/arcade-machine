@@ -1,5 +1,6 @@
 
 from pygame import KEYDOWN, K_m, K_p, K_1, K_8, K_w, K_a, K_s, K_d, K_i, K_j, K_k, K_l
+import string
 from pygame.sprite import Sprite
 from pygame.sprite import Group
 from pygame.sprite import GroupSingle
@@ -9,8 +10,9 @@ from arcade_machine.events import CHANGE_GAME
 from arcade_machine.games.game import Game
 from arcade_machine.sprites.rectangle import Rectangle
 from arcade_machine.sprites.label import Label
-from arcade_machine.controllers import high_score_manager
+from arcade_machine.high_score_manager import high_score_manager
 from arcade_machine.font_manager import font_manager
+from arcade_machine.components.carousel_menu import CarouselMenu
 
 from random import randint
 
@@ -105,6 +107,11 @@ class Snake(Game):
         self.small_font = font_manager.get_font("early_gameboy", 12)
 
         self.sel_option = 'Play'
+        self.initials_position = 0
+        self.alphabet = list(string.ascii_uppercase)
+        self.carousel_initials_0 = CarouselMenu(self.alphabet)
+        self.carousel_initials_1 = CarouselMenu(self.alphabet)
+        self.carousel_initials_2 = CarouselMenu(self.alphabet)
 
         # Start Screen View widgets
         self.title_label = Label('SNAKE', (62, 59, 156), 512, 180, self.header_font)
@@ -138,6 +145,16 @@ class Snake(Game):
         self.game_over_label = Label('GAME OVER', (62, 59, 156), 512, 70, self.large_font)
         self.continue_label = Label("Press 'A' to continue.", (62, 59, 156), 512, 700, self.body_font)
 
+        self.high_score_label = Label('High Scores', (62, 59, 156), 512, 70, self.large_font)
+        self.enter_high_score_label = Label('Enter your initials below', (62, 59, 156), 512, 150, self.body_font)
+        self.high_score_initial_0 = Label(self.carousel_initials_0.get_selected_item(), (62, 59, 156), 412, 400, self.header_font)
+        self.high_score_initial_1 = Label(self.carousel_initials_1.get_selected_item(), (62, 59, 156), 512, 400, self.header_font)
+        self.high_score_initial_2 = Label(self.carousel_initials_2.get_selected_item(), (62, 59, 156), 612, 400, self.header_font)
+
+        self.top_high_score_label = Label("Person", (62, 59, 156), 512, 300, self.header_font)
+        self.mid_high_score_label = Label("Person", (62, 59, 156), 512, 400, self.header_font)
+        self.low_high_score_label = Label("Person", (62, 59, 156), 512, 500, self.header_font)
+
         self.start_screen_view()
 
     def handle_event(self, event):
@@ -155,24 +172,44 @@ class Snake(Game):
                         event = Event(CHANGE_GAME, {"game": "MainMenu"})
                         pygame_post_event(event)
                         return
-                if self.game_state == 'OVER':
-                    self.check_scores()
+                elif self.game_state == 'OVER':
+                    if self.check_scores():
+                        self.game_state = 'HIGH'
+                        self.high_score_entry_view()
+                    else:
+                        self.game_state = 'SCORE'
+                        self.high_score_view()
+                elif self.game_state == 'HIGH':
+                    self.game_state = 'SCORE'
+                    self.high_score_view()
+                elif self.game_state == 'SCORE':
+                    self.game_state = 'START'
+                    self.start_screen_view()
+
             if event.key == K_w or event.key == K_i:
                 if self.game_state == 'START':
                     self.sel_option = 'Play'
                 elif self.game_state == 'GAME':
                     self.anaconda.direction = 'North'
+                elif self.game_state == 'HIGH':
+                    self.change_letter('UP')
             if event.key == K_a or event.key == K_j:
                 if self.game_state == 'GAME':
                     self.anaconda.direction = 'West'
+                elif self.game_state == 'HIGH':
+                    self.initials_position -= 1
             if event.key == K_s or event.key == K_k:
                 if self.game_state == 'START':
                     self.sel_option = 'Menu'
                 elif self.game_state == 'GAME':
                     self.anaconda.direction = 'South'
+                elif self.game_state == 'HIGH':
+                    self.change_letter('DOWN')
             if event.key == K_d or event.key == K_l:
                 if self.game_state == 'GAME':
                     self.anaconda.direction = 'East'
+                elif self.game_state == 'HIGH':
+                    self.initials_position += 1
 
     def update(self):
         if self.game_state == "START":
@@ -181,6 +218,10 @@ class Snake(Game):
             self.game_play_update()
         elif self.game_state == 'OVER':
             self.game_over_view()
+        elif self.game_state == 'HIGH':
+            self.high_score_entry_update()
+        elif self.game_state == 'SCORE':
+            pass
 
     def start_screen_view(self): # START
         self.drawable_objects.clear()
@@ -252,10 +293,47 @@ class Snake(Game):
         self.drawable_objects.append(self.continue_label)
 
     def high_score_entry_view(self): # HIGH
-        pass
+        self.drawable_objects.clear()
+        self.drawable_objects.append(self.high_score_label)
+        self.drawable_objects.append(self.enter_high_score_label)
+
+        self.drawable_objects.append(self.high_score_initial_0)
+        self.drawable_objects.append(self.high_score_initial_1)
+        self.drawable_objects.append(self.high_score_initial_2)
+
+        self.drawable_objects.append(self.continue_label)
+
+    def high_score_entry_update(self):
+        if self.initials_position < 0:
+            self.initials_position = 0
+        elif self.initials_position > 2:
+            self.initials_position = 2
+
+        if self.initials_position == 0:
+            self.high_score_initial_0.redraw_label(text=self.carousel_initials_0.get_selected_item(), color=(255, 255, 255))
+            self.high_score_initial_1.redraw_label(color=(62, 59, 156))
+            self.high_score_initial_2.redraw_label(color=(62, 59, 156))
+        elif self.initials_position == 1:
+            self.high_score_initial_0.redraw_label(color=(62, 59, 156))
+            self.high_score_initial_1.redraw_label(text=self.carousel_initials_1.get_selected_item(), color=(255, 255, 255))
+            self.high_score_initial_2.redraw_label(color=(62, 59, 156))
+        elif self.initials_position == 2:
+            self.high_score_initial_0.redraw_label(color=(62, 59, 156))
+            self.high_score_initial_1.redraw_label(color=(62, 59, 156))
+            self.high_score_initial_2.redraw_label(text=self.carousel_initials_2.get_selected_item(), color=(255, 255, 255))
 
     def high_score_view(self): # SCORE
-        pass
+
+        print(high_score_manager.get_high_scores('Snake'))
+
+        self.drawable_objects.clear()
+        self.drawable_objects.append(self.high_score_label)
+
+        self.drawable_objects.append(self.top_high_score_label)
+        self.drawable_objects.append(self.mid_high_score_label)
+        self.drawable_objects.append(self.low_high_score_label)
+
+        self.drawable_objects.append(self.continue_label)
 
     def collide_fruit(self):
         if self.anaconda.pieces[0] == self.fruit.pos:
@@ -264,4 +342,29 @@ class Snake(Game):
             self.score_label.redraw_label(text=str(self.anaconda.length))
 
     def check_scores(self):
-        pass
+        return high_score_manager.check_if_high_score('Snake', self.game_score)
+
+    def set_score(self):
+        high_score_manager.new_high_score('Snake', str(self.high_score_initial_0 +
+                                                       self.high_score_initial_1 +
+                                                       self.high_score_initial_2),
+                                                       self.game_score)
+
+    def change_letter(self, movement):
+        if movement == 'UP':
+            if self.initials_position == 0:
+                self.carousel_initials_0.select_previous_item()
+            elif self.initials_position == 1:
+                self.carousel_initials_1.select_previous_item()
+            elif self.initials_position == 2:
+                self.carousel_initials_2.select_previous_item()
+        elif movement == 'DOWN':
+            if self.initials_position == 0:
+                self.carousel_initials_0.select_next_item()
+            elif self.initials_position == 1:
+                self.carousel_initials_1.select_next_item()
+            elif self.initials_position == 2:
+                self.carousel_initials_2.select_next_item()
+
+    def reset(self):
+        self.game_score = 0

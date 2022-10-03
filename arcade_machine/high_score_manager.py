@@ -3,7 +3,8 @@ from json import dump as json_dump
 
 class HighScoreManager:
     persisted_scores = {
-        "Pong": 3
+        "Pong": 3,
+        "Snake": 3
     }
 
     SCORES_FILE_PATH = 'high_scores.json'

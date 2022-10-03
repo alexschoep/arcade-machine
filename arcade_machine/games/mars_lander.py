@@ -12,7 +12,7 @@ from arcade_machine.games.game import Game
 from arcade_machine.sprites.rectangle import Rectangle
 from arcade_machine.sprites.label import Label
 from arcade_machine.font_manager import font_manager
-from arcade_machine.controllers import high_score_manager
+from arcade_machine.high_score_manager import high_score_manager
 from arcade_machine.sprites.image_sprite import ImageSprite
 from arcade_machine.images.mars_lander_images import *
 

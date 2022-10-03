@@ -391,4 +391,15 @@ class Snake(Game):
 
     def reset(self):
         self.game_score = 3
+        self.score_label.redraw_label(text=str(self.game_score))
         self.num_fruit = 0
+        self.initials_position = 0
+        self.carousel_initials_0.set_to_zero_index()
+        self.carousel_initials_1.set_to_zero_index()
+        self.carousel_initials_2.set_to_zero_index()
+        self.high_score_letter_0 = self.carousel_initials_0.get_selected_item()
+        self.high_score_letter_1 = self.carousel_initials_1.get_selected_item()
+        self.high_score_letter_2 = self.carousel_initials_2.get_selected_item()
+        self.high_score_initial_0 = Label(self.high_score_letter_0, (62, 59, 156), 412, 400, self.header_font)
+        self.high_score_initial_1 = Label(self.high_score_letter_1, (62, 59, 156), 512, 400, self.header_font)
+        self.high_score_initial_2 = Label(self.high_score_letter_2, (62, 59, 156), 612, 400, self.header_font)

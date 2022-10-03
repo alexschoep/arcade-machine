@@ -1,14 +1,28 @@
 {
-    "Game1": {
-        "scores": [{
-                "name": "ADS",
-                "score": 80
-            },
-            {
-                "name": "WJC3",
-                "score": 80
-            }
-        ]
+  "Game1": {
+    "scores": [
+      {
+        "name": "ADS",
+        "score": 80
+      },
+      {
+        "name": "WJC3",
+        "score": 80
+      }
+    ]
+  },
+  "Snake": [
+    {
+      "name": "TAG",
+      "score": 9
     },
-    "Snake": []
+    {
+      "name": "OLD",
+      "score": 7
+    },
+    {
+      "name": "WAX",
+      "score": 6
+    }
+  ]
 }

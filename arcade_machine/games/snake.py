@@ -13,6 +13,8 @@ from arcade_machine.sprites.label import Label
 from arcade_machine.high_score_manager import high_score_manager
 from arcade_machine.font_manager import font_manager
 from arcade_machine.components.carousel_menu import CarouselMenu
+from arcade_machine.controllers.sound_player import play_sound
+from pygame.mixer import Sound
 
 from random import randint
 
@@ -106,6 +108,9 @@ class Snake(Game):
         self.body_font = font_manager.get_font("early_gameboy", 24)
         self.small_font = font_manager.get_font("early_gameboy", 12)
 
+        self.control_sound = Sound('arcade_machine/resources/audio/Snake/control_sound.wav')
+        self.snake_sound = Sound('arcade_machine/resources/audio/Snake/eating.wav')
+
         self.sel_option = 'Play'
         self.initials_position = 0
         self.alphabet = list(string.ascii_uppercase)
@@ -144,12 +149,16 @@ class Snake(Game):
         # Game Over Widgets
         self.game_over_label = Label('GAME OVER', (62, 59, 156), 512, 70, self.large_font)
         self.continue_label = Label("Press 'A' to continue.", (62, 59, 156), 512, 700, self.body_font)
+        self.change_letter_label = Label("Toggle Up and Down to change the initials.", (62, 59, 156), 512, 630, self.body_font)
 
         self.high_score_label = Label('High Scores', (62, 59, 156), 512, 70, self.large_font)
         self.enter_high_score_label = Label('Enter your initials below', (62, 59, 156), 512, 150, self.body_font)
-        self.high_score_initial_0 = Label(self.carousel_initials_0.get_selected_item(), (62, 59, 156), 412, 400, self.header_font)
-        self.high_score_initial_1 = Label(self.carousel_initials_1.get_selected_item(), (62, 59, 156), 512, 400, self.header_font)
-        self.high_score_initial_2 = Label(self.carousel_initials_2.get_selected_item(), (62, 59, 156), 612, 400, self.header_font)
+        self.high_score_letter_0 = self.carousel_initials_0.get_selected_item()
+        self.high_score_letter_1 = self.carousel_initials_1.get_selected_item()
+        self.high_score_letter_2 = self.carousel_initials_2.get_selected_item()
+        self.high_score_initial_0 = Label(self.high_score_letter_0, (62, 59, 156), 412, 400, self.header_font)
+        self.high_score_initial_1 = Label(self.high_score_letter_1, (62, 59, 156), 512, 400, self.header_font)
+        self.high_score_initial_2 = Label(self.high_score_letter_2, (62, 59, 156), 612, 400, self.header_font)
 
         self.top_high_score_label = Label("Person", (62, 59, 156), 512, 300, self.header_font)
         self.mid_high_score_label = Label("Person", (62, 59, 156), 512, 400, self.header_font)
@@ -159,13 +168,10 @@ class Snake(Game):
 
     def handle_event(self, event):
         if event.type == KEYDOWN:
-            if event.key == K_m:
-                event = Event(CHANGE_GAME, {"game": "MainMenu"})
-                pygame_post_event(event)
-                return
             if event.key == K_1 or event.key == K_8:
                 if self.game_state == 'START':
                     if self.sel_option == 'Play':
+                        self.control_sound.play()
                         self.game_state = 'GAME'
                         self.game_play_view()
                     elif self.sel_option == 'Menu':
@@ -173,6 +179,7 @@ class Snake(Game):
                         pygame_post_event(event)
                         return
                 elif self.game_state == 'OVER':
+                    self.control_sound.play()
                     if self.check_scores():
                         self.game_state = 'HIGH'
                         self.high_score_entry_view()
@@ -180,14 +187,19 @@ class Snake(Game):
                         self.game_state = 'SCORE'
                         self.high_score_view()
                 elif self.game_state == 'HIGH':
+                    self.control_sound.play()
+                    self.set_score()
                     self.game_state = 'SCORE'
                     self.high_score_view()
                 elif self.game_state == 'SCORE':
+                    self.control_sound.play()
+                    self.reset()
                     self.game_state = 'START'
                     self.start_screen_view()
 
             if event.key == K_w or event.key == K_i:
                 if self.game_state == 'START':
+                    self.control_sound.play()
                     self.sel_option = 'Play'
                 elif self.game_state == 'GAME':
                     self.anaconda.direction = 'North'
@@ -200,6 +212,7 @@ class Snake(Game):
                     self.initials_position -= 1
             if event.key == K_s or event.key == K_k:
                 if self.game_state == 'START':
+                    self.control_sound.play()
                     self.sel_option = 'Menu'
                 elif self.game_state == 'GAME':
                     self.anaconda.direction = 'South'
@@ -253,6 +266,7 @@ class Snake(Game):
         self.frame_counter = (self.frame_counter + 1) % 30
         if self.anaconda.collide == True:
             self.game_state = 'OVER'
+            self.snake_sound.play()
 
         self.collide_fruit()
 
@@ -301,6 +315,7 @@ class Snake(Game):
         self.drawable_objects.append(self.high_score_initial_1)
         self.drawable_objects.append(self.high_score_initial_2)
 
+        self.drawable_objects.append(self.change_letter_label)
         self.drawable_objects.append(self.continue_label)
 
     def high_score_entry_update(self):
@@ -309,22 +324,28 @@ class Snake(Game):
         elif self.initials_position > 2:
             self.initials_position = 2
 
+        self.high_score_letter_0 = self.carousel_initials_0.get_selected_item()
+        self.high_score_letter_1 = self.carousel_initials_1.get_selected_item()
+        self.high_score_letter_2 = self.carousel_initials_2.get_selected_item()
+
         if self.initials_position == 0:
-            self.high_score_initial_0.redraw_label(text=self.carousel_initials_0.get_selected_item(), color=(255, 255, 255))
+            self.high_score_initial_0.redraw_label(text=self.high_score_letter_0, color=(255, 255, 255))
             self.high_score_initial_1.redraw_label(color=(62, 59, 156))
             self.high_score_initial_2.redraw_label(color=(62, 59, 156))
         elif self.initials_position == 1:
             self.high_score_initial_0.redraw_label(color=(62, 59, 156))
-            self.high_score_initial_1.redraw_label(text=self.carousel_initials_1.get_selected_item(), color=(255, 255, 255))
+            self.high_score_initial_1.redraw_label(text=self.high_score_letter_1, color=(255, 255, 255))
             self.high_score_initial_2.redraw_label(color=(62, 59, 156))
         elif self.initials_position == 2:
             self.high_score_initial_0.redraw_label(color=(62, 59, 156))
             self.high_score_initial_1.redraw_label(color=(62, 59, 156))
-            self.high_score_initial_2.redraw_label(text=self.carousel_initials_2.get_selected_item(), color=(255, 255, 255))
+            self.high_score_initial_2.redraw_label(text=self.high_score_letter_2, color=(255, 255, 255))
 
     def high_score_view(self): # SCORE
-
-        print(high_score_manager.get_high_scores('Snake'))
+        up_to_date_scores = high_score_manager.get_high_scores('Snake')
+        self.top_high_score_label.redraw_label(text=str(up_to_date_scores[0]["name"] + "  " + str(up_to_date_scores[0]["score"])))
+        self.mid_high_score_label.redraw_label(text=str(up_to_date_scores[1]["name"] + "  " + str(up_to_date_scores[1]["score"])))
+        self.low_high_score_label.redraw_label(text=str(up_to_date_scores[2]["name"] + "  " + str(up_to_date_scores[2]["score"])))
 
         self.drawable_objects.clear()
         self.drawable_objects.append(self.high_score_label)
@@ -339,15 +360,17 @@ class Snake(Game):
         if self.anaconda.pieces[0] == self.fruit.pos:
             self.num_fruit = 0
             self.anaconda.length += 1
-            self.score_label.redraw_label(text=str(self.anaconda.length))
+            self.game_score = self.anaconda.length
+            self.score_label.redraw_label(text=str(self.game_score))
+            self.snake_sound.play()
 
     def check_scores(self):
         return high_score_manager.check_if_high_score('Snake', self.game_score)
 
     def set_score(self):
-        high_score_manager.new_high_score('Snake', str(self.high_score_initial_0 +
-                                                       self.high_score_initial_1 +
-                                                       self.high_score_initial_2),
+        high_score_manager.new_high_score('Snake', str(self.high_score_letter_0 +
+                                                       self.high_score_letter_1 +
+                                                       self.high_score_letter_2),
                                                        self.game_score)
 
     def change_letter(self, movement):
@@ -367,4 +390,5 @@ class Snake(Game):
                 self.carousel_initials_2.select_next_item()
 
     def reset(self):
-        self.game_score = 0
+        self.game_score = 3
+        self.num_fruit = 0

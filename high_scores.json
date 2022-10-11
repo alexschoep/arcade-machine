@@ -1,14 +1,28 @@
 {
-    "Game1": {
-        "persist_count": 3,
-        "scores": [{
-                "name": "ADS",
-                "score": 80
-            },
-            {
-                "name": "WJC3",
-                "score": 80
-            }
-        ]
+  "Game1": {
+    "scores": [
+      {
+        "name": "ADS",
+        "score": 80
+      },
+      {
+        "name": "WJC3",
+        "score": 80
+      }
+    ]
+  },
+  "Snake": [
+    {
+      "name": "JAM",
+      "score": 4
+    },
+    {
+      "name": "ACE",
+      "score": 4
+    },
+    {
+      "name": "LAB",
+      "score": 4
     }
+  ]
 }

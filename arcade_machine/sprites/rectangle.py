@@ -23,7 +23,7 @@ class Rectangle(Group):
         self.sprite = Sprite()
         self.change_surface_dimension(self.width, self.height)
         self.draw_rectangle()
-        self.place_rectangle(self.anchor)
+        self.place_rectangle()
         self.add(self.sprite)
 
     def draw_rectangle(self):
@@ -36,7 +36,7 @@ class Rectangle(Group):
             self.bevel
         )
 
-    def place_rectangle(self, anchor):
+    def place_rectangle(self):
         # Set the surface render to be in the user defined location
         if self.anchor == "TopLeft":
             self.sprite.rect = self.sprite.image.get_rect(topleft=(self.x_pos, self.y_pos))
@@ -68,10 +68,16 @@ class Rectangle(Group):
         self.height = new_height
         self.change_surface_dimension(self.width, self.height)
         self.draw_rectangle()
-        self.place_rectangle(self.anchor)
+        self.place_rectangle()
 
     def change_rectangle_color(self, new_color):
         self.color = new_color
         self.draw_rectangle()
+
+    def change_rectangle_position(self, new_x, new_y, new_anchor):
+        self.x_pos = new_x
+        self.y_pos = new_y
+        self.anchor = new_anchor
+        self.place_rectangle()
 
 

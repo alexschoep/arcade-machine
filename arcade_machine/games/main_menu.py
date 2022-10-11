@@ -1,9 +1,7 @@
 from pygame import KEYDOWN, K_a, K_d, K_j, K_l, K_ESCAPE, K_m, K_1, K_9
 from pygame.event import post as pygame_post_event
 from pygame.event import Event
-from pygame import quit as pygame_quit
 
-from arcade_machine.font_manager import font_manager
 from arcade_machine.controllers.music_player import load_music, play_music, stop_music
 from arcade_machine.utility.color_blender import get_blended_colors_list
 from arcade_machine.components.carousel_menu import CarouselMenu
@@ -65,9 +63,6 @@ class MainMenu(Game):
                 stop_music()
                 event = Event(CHANGE_GAME, {"game": "Settings"})
                 pygame_post_event(event)
-            elif event.key == K_ESCAPE: #TODO: Remove escape functionality
-                pygame_quit()
-                exit()
 
     def update(self):
         if self.bg_animation_timer <= self.bg_animation_steps: # Control the bg color change

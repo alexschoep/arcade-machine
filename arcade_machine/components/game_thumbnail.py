@@ -57,7 +57,7 @@ class GameThumbnail():
             self.thumbnail,
             512,
             360,
-            "Center"
+            anchor='Center'
         )
 
         return [

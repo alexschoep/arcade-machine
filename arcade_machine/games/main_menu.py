@@ -1,4 +1,3 @@
-from pygame import KEYDOWN, K_a, K_d, K_j, K_l, K_ESCAPE, K_m, K_1, K_9
 from pygame.event import post as pygame_post_event
 from pygame.event import Event
 

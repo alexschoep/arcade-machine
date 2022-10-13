@@ -1,5 +1,4 @@
 import pygame.mixer_music
-from pygame import KEYDOWN, K_m, K_p, K_1, K_8, K_w, K_a, K_s, K_d, K_i, K_j, K_k, K_l
 import string
 from pygame.sprite import Group
 from pygame.event import post as pygame_post_event

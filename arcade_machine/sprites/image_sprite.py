@@ -1,5 +1,6 @@
 from pygame.sprite import Sprite, OrderedUpdates
 from pygame.image import load
+from pygame.transform import scale, rotate
 
 
 class ImageSprite(OrderedUpdates):
@@ -14,11 +15,11 @@ class ImageSprite(OrderedUpdates):
         self.sprite = Sprite()
         self.sprite.image = load(image.get_file_path()).convert_alpha()
         self.sprite.rect = self.sprite.image.get_rect()
-        self.place_image(self.anchor)
+        self.place_image()
 
         self.add(self.sprite)
 
-    def place_image(self, anchor):
+    def place_image(self):
         # Set the surface render to be in the user defined location
         if self.anchor == "TopLeft":
             self.sprite.rect = self.sprite.image.get_rect(topleft=(self.x_pos, self.y_pos))
@@ -56,3 +57,9 @@ class ImageSprite(OrderedUpdates):
             self.sprite.rect.x = set_x
         if set_y != -1:
             self.sprite.rect.y = set_y
+
+    def scale_image(self, **kwargs):
+        new_size = kwargs.get('new_dim', (100, 100))
+
+        self.sprite.image = scale(self.sprite.image, new_size)
+        self.place_image()

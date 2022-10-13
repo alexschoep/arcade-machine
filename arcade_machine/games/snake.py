@@ -1,4 +1,4 @@
-
+import pygame.mixer_music
 from pygame import KEYDOWN, K_m, K_p, K_1, K_8, K_w, K_a, K_s, K_d, K_i, K_j, K_k, K_l
 import string
 from pygame.sprite import Group
@@ -106,7 +106,9 @@ class Snake(Game):
         self.small_font = font_manager.get_font("early_gameboy", 12)
 
         self.control_sound = Sound('arcade_machine/resources/audio/Snake/control_sound.wav')
+        self.control_sound.set_volume(pygame.mixer_music.get_volume())
         self.snake_sound = Sound('arcade_machine/resources/audio/Snake/eating.wav')
+        self.snake_sound.set_volume(pygame.mixer_music.get_volume())
 
         self.sel_option = 'Play'
         self.initials_position = 0

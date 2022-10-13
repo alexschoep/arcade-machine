@@ -302,7 +302,6 @@ class ArcadeSettings(Game):
         self.fill_bar.change_rectangle_dimension(int(self.volume * 792), 22)
 
     def highlight_controls(self, event):
-        print(event)
         if event == 'PAUSE_DOWN':
             self.control_display.colorize(self.control_display.pause_btn, (126,173,208))
         if event == 'PAUSE_UP':

@@ -1,9 +1,7 @@
 
 from pygame import KEYDOWN, K_m, K_p, K_1, K_8, K_w, K_a, K_s, K_d, K_i, K_j, K_k, K_l
 import string
-from pygame.sprite import Sprite
 from pygame.sprite import Group
-from pygame.sprite import GroupSingle
 from pygame.event import post as pygame_post_event
 from pygame.event import Event
 from arcade_machine.events import CHANGE_GAME
@@ -13,7 +11,6 @@ from arcade_machine.sprites.label import Label
 from arcade_machine.high_score_manager import high_score_manager
 from arcade_machine.font_manager import font_manager
 from arcade_machine.components.carousel_menu import CarouselMenu
-from arcade_machine.controllers.sound_player import play_sound
 from pygame.mixer import Sound
 
 from random import randint
@@ -167,62 +164,65 @@ class Snake(Game):
         self.start_screen_view()
 
     def handle_event(self, event):
-        if event.type == KEYDOWN:
-            if event.key == K_1 or event.key == K_8:
-                if self.game_state == 'START':
-                    if self.sel_option == 'Play':
-                        self.control_sound.play()
-                        self.game_state = 'GAME'
-                        self.game_play_view()
-                    elif self.sel_option == 'Menu':
-                        event = Event(CHANGE_GAME, {"game": "MainMenu"})
-                        pygame_post_event(event)
-                        return
-                elif self.game_state == 'OVER':
+
+        if event == 'P1_A_DOWN' or event == 'P2_A_DOWN':
+            if self.game_state == 'START':
+                if self.sel_option == 'Play':
                     self.control_sound.play()
-                    if self.check_scores():
-                        self.game_state = 'HIGH'
-                        self.high_score_entry_view()
-                    else:
-                        self.game_state = 'SCORE'
-                        self.high_score_view()
-                elif self.game_state == 'HIGH':
-                    self.control_sound.play()
-                    self.set_score()
+                    self.game_state = 'GAME'
+                    self.game_play_view()
+                elif self.sel_option == 'Menu':
+                    event = Event(CHANGE_GAME, {"game": "MainMenu"})
+                    pygame_post_event(event)
+                    return
+            elif self.game_state == 'OVER':
+                self.control_sound.play()
+                if self.check_scores():
+                    self.game_state = 'HIGH'
+                    self.high_score_entry_view()
+                else:
                     self.game_state = 'SCORE'
                     self.high_score_view()
-                elif self.game_state == 'SCORE':
-                    self.control_sound.play()
-                    self.reset()
-                    self.game_state = 'START'
-                    self.start_screen_view()
+            elif self.game_state == 'HIGH':
+                self.control_sound.play()
+                self.set_score()
+                self.game_state = 'SCORE'
+                self.high_score_view()
+            elif self.game_state == 'SCORE':
+                self.control_sound.play()
+                self.reset()
+                self.game_state = 'START'
+                self.start_screen_view()
 
-            if event.key == K_w or event.key == K_i:
-                if self.game_state == 'START':
-                    self.control_sound.play()
-                    self.sel_option = 'Play'
-                elif self.game_state == 'GAME':
-                    self.anaconda.direction = 'North'
-                elif self.game_state == 'HIGH':
-                    self.change_letter('UP')
-            if event.key == K_a or event.key == K_j:
-                if self.game_state == 'GAME':
-                    self.anaconda.direction = 'West'
-                elif self.game_state == 'HIGH':
-                    self.initials_position -= 1
-            if event.key == K_s or event.key == K_k:
-                if self.game_state == 'START':
-                    self.control_sound.play()
-                    self.sel_option = 'Menu'
-                elif self.game_state == 'GAME':
-                    self.anaconda.direction = 'South'
-                elif self.game_state == 'HIGH':
-                    self.change_letter('DOWN')
-            if event.key == K_d or event.key == K_l:
-                if self.game_state == 'GAME':
-                    self.anaconda.direction = 'East'
-                elif self.game_state == 'HIGH':
-                    self.initials_position += 1
+        if event == 'P1_N_DOWN' or event == 'P2_N_DOWN':
+            if self.game_state == 'START':
+                self.control_sound.play()
+                self.sel_option = 'Play'
+            elif self.game_state == 'GAME':
+                self.anaconda.direction = 'North'
+            elif self.game_state == 'HIGH':
+                self.change_letter('UP')
+
+        if event == 'P1_W_DOWN' or event == 'P2_W_DOWN':
+            if self.game_state == 'GAME':
+                self.anaconda.direction = 'West'
+            elif self.game_state == 'HIGH':
+                self.initials_position -= 1
+
+        if event == 'P1_S_DOWN' or event == 'P2_S_DOWN':
+            if self.game_state == 'START':
+                self.control_sound.play()
+                self.sel_option = 'Menu'
+            elif self.game_state == 'GAME':
+                self.anaconda.direction = 'South'
+            elif self.game_state == 'HIGH':
+                self.change_letter('DOWN')
+
+        if event == 'P1_E_DOWN' or event == 'P2_E_DOWN':
+            if self.game_state == 'GAME':
+                self.anaconda.direction = 'East'
+            elif self.game_state == 'HIGH':
+                self.initials_position += 1
 
     def update(self):
         if self.game_state == "START":

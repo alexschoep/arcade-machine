@@ -5,6 +5,8 @@ from pygame.display import set_mode as pygame_set_display_mode
 from pygame.display import update as pygame_update_display
 from pygame.time import Clock
 from pygame.event import get as pygame_get_event
+from pygame.joystick import Joystick
+from arcade_machine.input_manager import InputManager
 
 from arcade_machine.events import CHANGE_GAME
 from games.main_menu import MainMenu
@@ -28,6 +30,13 @@ def main():
     current_game_title = "MainMenu"
     game_changed = True
 
+    try: # Setup Joysticks for input
+        player1 = Joystick(0)
+        player2 = Joystick(1)
+    except:
+        pass
+    input_manager = InputManager()
+
     while True:
         if game_changed:
             stop_music() # Stop music to prevent sound mix issues when initializing the next game
@@ -43,7 +52,7 @@ def main():
                 game_changed = True
                 current_game_title = event.game
             else:
-                current_game.handle_event(event)
+                current_game.handle_event(input_manager.return_event_proxy(event))
         
         if not game_changed:
             current_game.update()

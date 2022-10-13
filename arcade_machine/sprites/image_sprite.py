@@ -12,7 +12,7 @@ class ImageSprite(OrderedUpdates):
         self.anchor = anchor
 
         self.sprite = Sprite()
-        self.sprite.image = load(image.get_file_path()).convert()
+        self.sprite.image = load(image.get_file_path()).convert_alpha()
         self.sprite.rect = self.sprite.image.get_rect()
         self.place_image(self.anchor)
 
@@ -41,3 +41,18 @@ class ImageSprite(OrderedUpdates):
 
     def change_image(self, new_image_path):
         self.sprite.image = load(new_image_path).convert()
+
+    def move_image(self, **kwargs):
+        step_x = kwargs.get('step_x', 0)
+        step_y = kwargs.get('step_y', 0)
+        set_x = kwargs.get('set_x', -1)
+        set_y = kwargs.get('set_y', -1)
+
+        if step_x != 0:
+            self.sprite.rect.x += step_x
+        if step_y != 0:
+            self.sprite.rect.y += step_y
+        if set_x != -1:
+            self.sprite.rect.x = set_x
+        if set_y != -1:
+            self.sprite.rect.y = set_y

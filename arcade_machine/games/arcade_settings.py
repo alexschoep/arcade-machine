@@ -5,8 +5,7 @@ from arcade_machine.sprites.label import Label
 from arcade_machine.sprites.rectangle import Rectangle
 from arcade_machine.sprites.ellipse import Ellipse
 from arcade_machine.sprites.polygon import Polygon
-from arcade_machine.controllers.music_player import set_volume, get_volume
-from arcade_machine.controllers.sound_player import set_volume as set_sound_volume
+from arcade_machine.controllers.music_player import set_volume, get_volume, load_music, play_music, stop_music
 from arcade_machine.events import CHANGE_GAME
 from pygame import quit as pygame_quit
 from pygame.event import post as pygame_post_event
@@ -14,7 +13,6 @@ from pygame.event import Event
 from pygame.sprite import Group
 
 from arcade_machine.font_manager import font_manager
-from arcade_machine.controllers.music_player import load_music, play_music, stop_music
 
 class KeyboardGraphic():
     def __init__(self):
@@ -265,7 +263,7 @@ class ArcadeSettings(Game):
 
         self.drawable_objects.append(self.control_display.button_group)
 
-        load_music('arcade_machine/resources/audio/Settings/menu_music.mp3')
+        load_music('arcade_machine/resources/audio/Settings/menu_music.MP3')
         play_music()  # loop indefinitely
 
     def handle_event(self, event):

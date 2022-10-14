@@ -18,7 +18,7 @@ from arcade_machine.high_score_manager import high_score_manager
 from arcade_machine.sprites.image_sprite import ImageSprite
 from arcade_machine.components.parallax import Parallax
 from arcade_machine.images.mars_lander_images import *
-from arcade_machine import input_manager
+from pygame.mixer import Sound
 
 from random import randint
 
@@ -29,8 +29,8 @@ class Planet(Sprite):
         self.counter = 0
         self.index = 0
         self.planet_animation = []
-        for file_name in os.listdir(r"arcade_machine/resources/images/mars_lander/planet_animation/mars"):
-            img = Image((r"arcade_machine/resources/images/mars_lander/planet_animation/mars" + os.sep + file_name))
+        for file_name in os.listdir(r"arcade_machine/resources/images/mars_lander/planet_animation/titan"):
+            img = Image((r"arcade_machine/resources/images/mars_lander/planet_animation/titan" + os.sep + file_name))
             sp_img = ImageSprite(img, 732, 360, "Center")
             sp_img.scale_image(new_dim=(150, 150))
             self.planet_animation.append(sp_img)
@@ -68,13 +68,41 @@ class MarsLander(Game):
         self.game_mode = "MARS" # MOON, NEPTUNE, TITAN, DEEPSPACE
         self.num_stars = 100
 
+        # --- INDICATORS ---
+        self.start_menu_option = 0
+
+
         self.title_font = font_manager.get_font('lemon_milk', 108)
-        self.header_font = font_manager.get_font('lemon_milk', 60)
+        self.header_font = font_manager.get_font('lemon_milk', 72)
         self.large_font = font_manager.get_font('lemon_milk', 36)
         self.body_font = font_manager.get_font('lemon_milk', 24)
         self.small_font = font_manager.get_font('lemon_milk', 12)
 
-        self.game_title = Label('MARS LANDER', (0, 0, 0), 512, 90, self.title_font)
+        self.button_sound = Sound('arcade_machine/resources/audio/Mars Lander/button.wav')
+        self.button_sound.set_volume(pygame.mixer_music.get_volume())
+
+
+        # --- START MENU OBJECTS ---
+        self.game_title = Label('MARS LANDER', (242, 101, 34), 512, 110, self.title_font)
+        self.divider = Rectangle(color=(200, 200, 200), x_pos=0, y_pos=200, width=1024, height=6, line_weight=0,
+                                 bevel=0, alpha=255, anchor="TopLeft")
+        self.start_label = Label('START', (0, 0, 0), 512, 320, self.header_font)
+        self.controls_label = Label('CONTROLS', (200, 200, 200), 512, 420, self.header_font)
+        self.abort_label = Label('ABORT', (200, 200, 200), 512, 520, self.header_font)
+
+        # --- CONTROLS SCREEN OBJECTS ---
+
+        # --- TRAJECTORY SCREEN OBJECTS ---
+
+        # --- GAME PLAY OBJECTS ---
+
+        # --- GAME OVER OBJECTS ---
+
+        # --- HIGH SCORE OBJECTS ---
+
+        # --- SCORE OBJECTS ---
+
+
         #self.game_subtitle = Label('Artemis Missons', (100, 100, 100), 512, 230, self.large_font, anchor='MidLeft')
 
         self.gray_rect = Rectangle(width=824, height=380, x_pos=512, y_pos=360, color=(200, 200, 200), bevel=22,
@@ -89,8 +117,7 @@ class MarsLander(Game):
         self.data_label = Label('DATA:', (100, 100, 100), 120, 450, self.large_font, anchor='BottomLeft')
         self.anomalies_label = Label('No Anomalies', (0, 0, 0), 120, 490, self.large_font, anchor='BottomLeft')
 
-        self.initiate_label = Label('INITIATE', (0, 0, 0), 512, 620, self.header_font)
-        self.abort_label = Label('ABORT', (200, 200, 200), 512, 700, self.header_font)
+
 
         #self.star_cluster = Group()
         #self.drawable_objects.append(self.star_cluster)
@@ -117,40 +144,68 @@ class MarsLander(Game):
 
 
     def handle_event(self, event):
-        if event == 'MENU_DOWN':
-            event = Event(CHANGE_GAME, {"game": "MainMenu"})
-            pygame_post_event(event)
-            return
+        if self.game_state == 'START':
+            if event == 'P1_N_DOWN' or event == 'P2_N_DOWN':
+                self.start_menu_option -= 1
+                self.button_sound.play()
+            if event == 'P1_S_DOWN' or event == 'P2_S_DOWN':
+                self.start_menu_option += 1
+                self.button_sound.play()
+            if event == 'P1_A_DOWN' or event == 'P2_A_DOWN':
+                if self.start_menu_option == 0:
+                    self.game_state = 'TRAJ'
+                    self.trajectory_screen_view()
+                elif self.start_menu_option == 1:
+                    self.controls_screen_view()
+                elif self.start_menu_option == 2:
+                    event = Event(CHANGE_GAME, {"game": "MainMenu"})
+                    pygame_post_event(event)
+                    return
+                self.button_sound.play()
 
 
     def update(self):
-        #self.step -= 1
-        #self.star_cluster.update()
-        #self.planet.sprite.rect.x -=1
-        #print("Set:", self.planet.sprite.rect.x)
-
-        #self.ellipse = Ellipse(width=1024, height=768, x_pos=500, y_pos=100, alpha=255, color=(255, 255, 255), anchor='TopLeft')
-        #self.ellipse.sprite.image.blit(self.planet.sprite.image, (self.step, 0), None, BLEND_RGBA_MULT)
-        #print(self.planet.sprite.rect.x)
-        #self.mars_planet.update()
-        self.start_screen_update()
-        pass
+        if self.game_state == 'START':
+            self.start_screen_update()
+        elif self.game_state == 'TRAJ':
+            self.trajectory_screen_update()
 
     def start_screen_view(self):
         self.drawable_objects.clear()
-        self.title_rectangle = Rectangle(color=(255, 255, 255),
-                                     x_pos=0,
-                                     y_pos=0,
-                                     width=1024,
-                                     height=300,
-                                     line_weight=0,
-                                     bevel=0,
-                                     alpha=255,
-                                     anchor="TopLeft")
-        self.drawable_objects.append(self.title_rectangle)
-       # self.drawable_objects.append(self.star_cluster)
         self.drawable_objects.append(self.game_title)
-        #self.drawable_objects.append(self.game_subtitle)
+        self.drawable_objects.append(self.divider)
+        self.drawable_objects.append(self.start_label)
+        self.drawable_objects.append(self.controls_label)
+        self.drawable_objects.append(self.abort_label)
+
+
+    def start_screen_update(self):
+        if self.start_menu_option < 0:
+            self.start_menu_option = 0
+        elif self.start_menu_option > 2:
+            self.start_menu_option = 2
+
+        if self.start_menu_option == 0:
+            self.start_label.redraw_label(color=(0, 0, 0))
+            self.controls_label.redraw_label(color=(200, 200, 200))
+        elif self.start_menu_option == 1:
+            self.start_label.redraw_label(color=(200, 200, 200))
+            self.controls_label.redraw_label(color=(0, 0, 0))
+            self.abort_label.redraw_label(color=(200, 200, 200))
+        elif self.start_menu_option == 2:
+            self.controls_label.redraw_label(color=(200, 200, 200))
+            self.abort_label.redraw_label(color=(0, 0, 0))
+
+    def controls_screen_view(self):
+        pass
+
+    def controls_screen_update(self):
+        pass
+
+
+    def trajectory_screen_view(self):
+        self.drawable_objects.clear()
+        # self.drawable_objects.append(self.game_subtitle)
         self.drawable_objects.append(self.gray_rect)
         self.drawable_objects.append(self.black_rect)
 
@@ -161,16 +216,9 @@ class MarsLander(Game):
         self.drawable_objects.append(self.data_label)
         self.drawable_objects.append(self.anomalies_label)
 
-        #self.drawable_objects.append(self.mars_planet.image)
         self.drawable_objects.append(self.planet_group)
-        self.drawable_objects.append(self.initiate_label)
-        self.drawable_objects.append(self.abort_label)
 
-        #self.drawable_objects.append(self.planet)
-        #self.drawable_objects.append(self.ellipse)
-
-    def start_screen_update(self):
+    def trajectory_screen_update(self):
         self.mars_planet.update()
         self.planet_group.empty()
         self.planet_group.add((self.mars_planet.image))
-

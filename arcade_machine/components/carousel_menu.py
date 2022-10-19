@@ -24,3 +24,9 @@ class CarouselMenu():
             self.selected_item_index = 0
         except:
             pass
+
+    def get_item_at_index(self, index):
+        try:
+            return self.items[index]
+        except:
+            pass

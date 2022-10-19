@@ -1,3 +1,4 @@
+import pygame.mask
 from pygame.sprite import Sprite, OrderedUpdates
 from pygame.image import load
 from pygame.transform import scale, rotate
@@ -16,6 +17,7 @@ class ImageSprite(OrderedUpdates):
         self.sprite.image = load(image.get_file_path()).convert_alpha()
         self.sprite.rect = self.sprite.image.get_rect()
         self.place_image()
+        self.sprite.mask = pygame.mask.from_surface(self.sprite.image)
 
         self.add(self.sprite)
 
@@ -40,8 +42,8 @@ class ImageSprite(OrderedUpdates):
         else:
             self.sprite.rect = self.sprite.image.get_rect(center = (self.x_pos, self.y_pos))
 
-    def change_image(self, new_image_path):
-        self.sprite.image = load(new_image_path).convert()
+    def change_image(self, new_image):
+        self.sprite.image = load(new_image.get_file_path()).convert_alpha()
 
     def move_image(self, **kwargs):
         step_x = kwargs.get('step_x', 0)
@@ -60,6 +62,8 @@ class ImageSprite(OrderedUpdates):
 
     def scale_image(self, **kwargs):
         new_size = kwargs.get('new_dim', (100, 100))
-
         self.sprite.image = scale(self.sprite.image, new_size)
+        self.sprite.rect = self.sprite.image.get_rect()
         self.place_image()
+        self.sprite.mask = pygame.mask.from_surface(self.sprite.image)
+

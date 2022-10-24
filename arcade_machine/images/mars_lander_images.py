@@ -1,3 +1,27 @@
 from arcade_machine.images.image import Image
 
-mars_planet = Image('arcade_machine/resources/images/thumbnails/Asteroid.png')
+mars_planet = Image('arcade_machine/resources/images/mars_lander/mars_planet.png')
+
+lander = Image('arcade_machine/resources/images/mars_lander/Lander.png')
+lander_crash = Image('arcade_machine/resources/images/mars_lander/LanderCrash.png')
+
+mars_level_0 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level0.png')
+mars_level_1 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level1.png')
+mars_level_2 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level2.png')
+mars_level_3 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level3.png')
+mars_level_4 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level4.png')
+mars_level_5 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level5.png')
+mars_level_6 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level6.png')
+mars_level_7 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level7.png')
+mars_level_8 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level8.png')
+mars_level_9 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level9.png')
+mars_level_10 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level10.png')
+mars_level_11 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level11.png')
+mars_level_12 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level12.png')
+mars_level_13 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level13.png')
+mars_level_14 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level14.png')
+mars_level_15 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level15.png')
+mars_level_16 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level16.png')
+mars_level_17 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level17.png')
+mars_level_18 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level18.png')
+mars_level_19 = Image('arcade_machine/resources/images/mars_lander/mars_levels/Level19.png')

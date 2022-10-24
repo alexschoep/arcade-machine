@@ -13,16 +13,30 @@
   },
   "Snake": [
     {
-      "name": "JAM",
-      "score": 4
+      "name": "HAT",
+      "score": 35
+    },
+    {
+      "name": "BAX",
+      "score": 35
+    },
+    {
+      "name": "ZAP",
+      "score": 22
+    }
+  ],
+  "MarsLanderMars": [
+    {
+      "name": "ACE",
+      "score": 414
     },
     {
       "name": "ACE",
-      "score": 4
+      "score": 403
     },
     {
-      "name": "LAB",
-      "score": 4
+      "name": "IAN",
+      "score": 340
     }
   ]
 }

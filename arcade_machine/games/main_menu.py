@@ -1,4 +1,3 @@
-from pygame import KEYDOWN, K_a, K_d, K_j, K_l, K_ESCAPE, K_m, K_1, K_9
 from pygame.event import post as pygame_post_event
 from pygame.event import Event
 
@@ -42,27 +41,25 @@ class MainMenu(Game):
         self.update_colors_list()
 
     def handle_event(self, event):
-        pass
-        if event.type == KEYDOWN:
-            if event.key == K_a or event.key == K_j:
-                self.carousel_menu.select_next_item()
-                self.replace_drawable()
-                self.update_colors_list()
-            elif event.key == K_d or event.key == K_l:
-                self.carousel_menu.select_previous_item()
-                self.replace_drawable()
-                self.update_colors_list()
-            elif event.key == K_1 or event.key == K_9:
-                stop_music()
-                event = Event(
-                    CHANGE_GAME,
-                    {"game": self.carousel_menu.get_selected_item().get_title()}
-                )
-                pygame_post_event(event)
-            elif event.key == K_m:
-                stop_music()
-                event = Event(CHANGE_GAME, {"game": "Settings"})
-                pygame_post_event(event)
+        if event == 'P1_W_DOWN' or event == 'P2_W_DOWN':
+            self.carousel_menu.select_next_item()
+            self.replace_drawable()
+            self.update_colors_list()
+        elif event == 'P1_E_DOWN' or event == 'P2_E_DOWN':
+            self.carousel_menu.select_previous_item()
+            self.replace_drawable()
+            self.update_colors_list()
+        elif event == 'P1_A_DOWN' or event == 'P2_A_DOWN':
+            stop_music()
+            event = Event(
+                CHANGE_GAME,
+                {"game": self.carousel_menu.get_selected_item().get_title()}
+            )
+            pygame_post_event(event)
+        elif event == 'MENU_DOWN':
+            stop_music()
+            event = Event(CHANGE_GAME, {"game": "Settings"})
+            pygame_post_event(event)
 
     def update(self):
         if self.bg_animation_timer <= self.bg_animation_steps: # Control the bg color change

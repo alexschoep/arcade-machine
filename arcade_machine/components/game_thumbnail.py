@@ -57,7 +57,7 @@ class GameThumbnail():
             self.thumbnail,
             512,
             360,
-            "Center"
+            anchor='Center'
         )
 
         return [
@@ -92,9 +92,9 @@ asteroid_universe_thumbnail_item = GameThumbnail(
 mars_lander_thumbnail_item = GameThumbnail(
     "Mars Lander",
     MARS_LANDER_THUMBNAIL,
-    (241, 219, 205),
+    (242, 101, 34),
     "lemon_milk",
-    (200, 59, 0),
+    (60, 18, 0),
     True,
     False
 )

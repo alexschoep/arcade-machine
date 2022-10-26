@@ -20,13 +20,8 @@ class CarouselMenu():
         return self.items[self.selected_item_index]
 
     def set_to_zero_index(self):
-        try:
-            self.selected_item_index = 0
-        except:
-            pass
+        self.selected_item_index = 0
 
     def get_item_at_index(self, index):
-        try:
-            return self.items[index]
-        except:
-            pass
+        self.items[index]
+

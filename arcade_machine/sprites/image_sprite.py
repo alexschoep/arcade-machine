@@ -14,6 +14,7 @@ class ImageSprite(OrderedUpdates):
         self.anchor = anchor
 
         self.sprite = Sprite()
+        self.sprite.image_original = load(image.get_file_path()).convert_alpha()
         self.sprite.image = load(image.get_file_path()).convert_alpha()
         self.sprite.rect = self.sprite.image.get_rect()
         self.place_image()
@@ -43,26 +44,39 @@ class ImageSprite(OrderedUpdates):
             self.sprite.rect = self.sprite.image.get_rect(center = (self.x_pos, self.y_pos))
 
     def change_image(self, new_image):
+        self.sprite.image_original = load(new_image.get_file_path()).convert_alpha()
         self.sprite.image = load(new_image.get_file_path()).convert_alpha()
 
     def move_image(self, **kwargs):
-        step_x = kwargs.get('step_x', 0)
-        step_y = kwargs.get('step_y', 0)
-        set_x = kwargs.get('set_x', -1)
-        set_y = kwargs.get('set_y', -1)
+        step_x = kwargs.get('step_x')
+        step_y = kwargs.get('step_y')
+        set_x = kwargs.get('set_x')
+        set_y = kwargs.get('set_y')
+        anchor = kwargs.get('new_anchor')
 
-        if step_x != 0:
-            self.sprite.rect.x += step_x
-        if step_y != 0:
-            self.sprite.rect.y += step_y
-        if set_x != -1:
-            self.sprite.rect.x = set_x
-        if set_y != -1:
-            self.sprite.rect.y = set_y
+        if step_x != None:
+            self.x_pos = self.sprite.rect.x + step_x
+        if step_y != None:
+            self.y_pos = self.sprite.rect.y + step_y
+        if set_x != None:
+            self.x_pos = set_x
+        if set_y != None:
+            self.y_pos = set_y
+
+        if anchor != None:
+            self.anchor = anchor
+        self.place_image()
 
     def scale_image(self, **kwargs):
         new_size = kwargs.get('new_dim', (100, 100))
-        self.sprite.image = scale(self.sprite.image, new_size)
+        self.sprite.image = scale(self.sprite.image_original, new_size)
+        self.sprite.rect = self.sprite.image.get_rect()
+        self.place_image()
+        self.sprite.mask = pygame.mask.from_surface(self.sprite.image)
+
+    def rotate_image(self, **kwargs):
+        new_angle = kwargs.get('new_angle', 0)
+        self.sprite.image = rotate(self.sprite.image_original, new_angle)
         self.sprite.rect = self.sprite.image.get_rect()
         self.place_image()
         self.sprite.mask = pygame.mask.from_surface(self.sprite.image)
